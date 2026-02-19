@@ -1,0 +1,29 @@
+System_design
+Customer operations
+1. Add Customer..
+2. View all customer..
+3. View customer details..
+4.view CUstomer orders.
+5. update customer..
+6. Delete customer..
+7.Place order include inlineFormset
+
+Product operations
+
+1.Add Product..
+2.view product list..
+3.view product detials..
+4.update product..
+5.delete product..
+6.filter by category.tags..
+
+
+Order operations
+1.Create order..
+2.view all order..
+3.update order status..
+4.delete order..
+
+Tags Operations
+1. Add tags..
+2. Assign tag to product

@@ -1,0 +1,23 @@
+body{
+    background-color: lightblue;
+}
+
+#total-orders{
+    background-color: red;
+   
+}
+
+#orders-delivered{
+    background-color: palegreen;
+    
+}
+
+#orders-pending{
+    background-color: blue;
+    
+}
+
+#out-for-delivery{
+    background-color: green;
+    
+}

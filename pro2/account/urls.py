@@ -20,7 +20,7 @@ urlpatterns = [
     
 #product operations
     path('add_product/',views.add_product,name='add_product'),
-
+    #didnt use delete products
 
 #tag operations
     path('tag/',views.tag,name='tag'),

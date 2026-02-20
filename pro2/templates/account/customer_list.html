@@ -17,11 +17,11 @@
 							<th>Email</th>
 						</tr>
 
-						{% for customer in customers %}
+						{% for i in customers %}
 							<tr>
-								<td>{{customer.name}}</td>
-								<td>{{customer.phone}}</td>
-								<td>{{customer.email}}</td>
+								<td>{{i.name}}</td>
+								<td>{{i.phone}}</td>
+								<td>{{i.email}}</td>
 							</tr>
 						{% endfor %}
 

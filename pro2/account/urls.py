@@ -2,11 +2,14 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-# Dashboard and Product
+# Dashboard area
     path('',views.home,name='home'),
+    path('order_list/',views.Order_list,name='order_list'),
+    
+#navbar operations
     path('product/',views.Prod,name='product'),
-    path('customer/',views.customer,name='customer'),
     path('customer/<str:pk_test>/',views.customer,name='customer_detail'),
+    path('tag/',views.tag_list,name='tag'),
 #order operations
     path('create_order/',views.createOrder,name='create_order'),    
     path('update_order/<str:pk>/',views.updateorder,name='update_order'),
@@ -20,8 +23,11 @@ urlpatterns = [
     
 #product operations
     path('add_product/',views.add_product,name='add_product'),
-    #didnt use delete products
+    path('delete_product/<str:pk>/',views.deleteproduct,name='delete_product'),
+    path('update_product/<str:pk>/',views.update_product,name='update_product'),
+    
 
 #tag operations
-    path('tag/',views.tag,name='tag'),
+    
+    path('import_tag/',views.importtag,name='import_tag'),
 ]

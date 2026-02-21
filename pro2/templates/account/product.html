@@ -1,35 +1,48 @@
-{%  extends 'main.html' %}
+{% extends 'main.html' %}
 
 {% block content %}
 
-		<br>
+    <br>
 
-		<div class="row">
-			<div class="col-md">
-				<div class="card card-body">
-		<a class="btn btn-primary btn-sm btn-block" href="{% url 'add_product' %}">Add Product</a>
-					<h5>Products</h5>
-				</div>
-				<div class="card card-body">
-					<table class="table">
-						<tr>
-							<th>Product</th>
-							<th>Category</th>
-							<th>Price</th>
-						</tr>
+    <div class="row">
+        <div class="col-md">
+            <div class="card card-body">
+                <a class="btn btn-primary btn-sm btn-block" href="{% url 'add_product' %}">Add Product</a>
+                <h5>Products</h5>
+            </div>
+            <div class="card card-body">
+                <table class="table">
+                    <tr>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
 
-						{% for i in product %}
-							<tr>
-								<td>{{i.name}}</td>
-								<td>{{i.category}}</td>
-								<td>{{i.price}}</td>
-							</tr>
-						{% endfor %}
+                    {% for i in product %}
+                        <tr>
+                            <td>
+                                {% if i.pic %}
+                                    <img src="{{ i.pic.url }}" width="60" height="60" style="object-fit:cover;">
+                                {% else %}
+                                    <span class="text-muted">No Image</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ i.name }}</td>
+                            <td>{{ i.category }}</td>
+                            <td>{{ i.description }}</td>
+                            <td>{{ i.price }}</td>
+                            <td><a class="btn btn-sm btn-info" href="{% url 'update_product' i.id %}">Update</a></td>
+                            <td><a class="btn btn-sm btn-danger" href="{% url 'delete_product' i.id %}">Delete</a></td>
+                        </tr>
+                    {% endfor %}
 
-					</table>
-				</div>
-			</div>
-
-		</div>
+                </table>
+            </div>
+        </div>
+    </div>
 
 {% endblock content %}

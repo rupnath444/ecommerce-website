@@ -1,23 +1,47 @@
-body{
+body {
     background-color: lightblue;
 }
 
-#total-orders{
+#total-orders {
     background-color: red;
    
 }
 
-#orders-delivered{
+#total-orders:hover {
+    transform: translate(5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+#orders-delivered {
     background-color: palegreen;
-    
+  
 }
 
-#orders-pending{
+#orders-delivered:hover {
+    transform: translate(5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+#orders-pending {
     background-color: blue;
-    
+  
 }
 
-#out-for-delivery{
+#orders-pending:hover {
+    transform: translate(5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+#out-for-delivery {
     background-color: green;
-    
+  
+}
+
+#out-for-delivery:hover {
+    transform: translate(5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    cursor: pointer;
 }

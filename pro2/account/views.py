@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Customer, Order, Product, Tag
 from .forms import OrderForm, CustomerForm, ProductForm
 from django.forms import inlineformset_factory
+from .filters import OrderFilter
 import csv
 
 # Create your views here.
@@ -68,7 +69,9 @@ def customer(request, pk_test=None):
             customer = None
         orders = customer.order_set.all() if customer else []
         order_count = orders.count() if customer else 0
-        context = {'customer': customer, 'orders': orders, 'order_count': order_count}
+        myfilter = OrderFilter(request.GET, queryset=orders)
+        orders = myfilter.qs
+        context = {'customer': customer, 'orders': orders, 'order_count': order_count, 'myfilter': myfilter}
     else:
         customers = Customer.objects.all()
         context = {'customers': customers}

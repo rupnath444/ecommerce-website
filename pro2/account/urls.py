@@ -2,6 +2,11 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+# login and resitration
+    path('login/',views.loginpage,name='login'),
+    path('logout/',views.logoutUser,name='logout'),
+    path('registration/',views.registration,name='registration'),
+    
 # Dashboard area
     path('',views.home,name='home'),
     path('order_list/',views.Order_list,name='order_list'),
@@ -30,4 +35,7 @@ urlpatterns = [
 #tag operations
     
     path('import_tag/',views.importtag,name='import_tag'),
+
 ]
+
+

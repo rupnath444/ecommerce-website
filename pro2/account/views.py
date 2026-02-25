@@ -1,12 +1,54 @@
+from multiprocessing import context
+
 from django.shortcuts import render, redirect
 from .models import Customer, Order, Product, Tag
 from .forms import OrderForm, CustomerForm, ProductForm
 from django.forms import inlineformset_factory
 from .filters import OrderFilter
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 import csv
-
+from .forms import CreateUserForm
 # Create your views here.
 #dashboard Operations
+
+
+
+def registration(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    form = CreateUserForm()
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    context = {'form': form}
+    return render(request, 'account/registration.html', context)
+
+def loginpage(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    else:
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+            else:
+                messages.info(request, 'Username OR password is incorrect')
+        context = {}
+        return render(request, 'account/login.html', context)
+
+def logoutUser(request):
+    from django.contrib.auth import logout
+    logout(request)
+    return redirect('login')
+
+@login_required(login_url='login')
 def home(request):
     orders = Order.objects.all()
     customers = Customer.objects.all()
@@ -24,6 +66,7 @@ def home(request):
     }
     return render(request, 'account/dashboard.html', context)
 
+@login_required(login_url='login')
 def createOrder(request):
     form = OrderForm()
     if request.method == 'POST':
@@ -34,6 +77,8 @@ def createOrder(request):
     context = {'form': form}
     return render(request, 'account/order_form.html', context)
 
+
+@login_required(login_url='login')
 def create_customer(request):
     form = CustomerForm()
     if request.method == 'POST':
@@ -45,6 +90,8 @@ def create_customer(request):
     return render(request, 'account/create_customer.html', context)
 
 
+
+@login_required(login_url='login')
 def Order_list(request):
     status = request.GET.get('status')
     if status:
@@ -55,12 +102,14 @@ def Order_list(request):
     return render(request, 'account/order_list.html', context)
 
 ###############################################################################################
+
+@login_required(login_url='login')
 def Prod(request):
     product = Product.objects.all()
     context = {'product': product}
     return render(request, 'account/product.html', context)
 
-
+@login_required(login_url='login')
 def customer(request, pk_test=None):
     if pk_test:
         try:
@@ -78,6 +127,8 @@ def customer(request, pk_test=None):
     return render(request, 'account/customer.html', context)
 
 
+
+@login_required(login_url='login')
 def updateorder(request, pk):
     order = Order.objects.get(id=pk)
     form = OrderForm(instance=order)
@@ -89,6 +140,8 @@ def updateorder(request, pk):
     context = {'form': form}
     return render(request, 'account/order_form.html', context)
 
+
+@login_required(login_url='login')
 def deleteorder(request, pk):
     order = Order.objects.get(id=pk)
     if request.method == 'POST':
@@ -97,6 +150,8 @@ def deleteorder(request, pk):
     context = {'item': order}
     return render(request, 'account/delete.html', context)
 
+
+@login_required(login_url='login')
 def place_order(request, pk):
     customer = Customer.objects.get(id=pk)
     orderformset = inlineformset_factory(Customer, Order, fields=('product', 'status'), extra=7)
@@ -110,12 +165,15 @@ def place_order(request, pk):
     return render(request, 'account/place_order.html', context)
 
 
+@login_required(login_url='login')
 def Customer_list(request):
     customers = Customer.objects.all()
     context = {'customers': customers}
     return render(request, 'account/customer_list.html', context)
 
 
+
+@login_required(login_url='login')
 def update_customer(request, pk):
     customer = Customer.objects.get(id=pk)
     form = CustomerForm(instance=customer)
@@ -127,6 +185,8 @@ def update_customer(request, pk):
     context = {'form': form, 'customer': customer}
     return render(request, 'account/create_customer.html', context)
 
+
+@login_required(login_url='login')
 def deletecustomer(request, pk):
     customer = Customer.objects.get(id=pk)
     if request.method == 'POST':
@@ -135,6 +195,8 @@ def deletecustomer(request, pk):
     context = {'item': customer}
     return render(request, 'account/delete.html', context)
 
+
+@login_required(login_url='login')
 def add_product(request):
     form = ProductForm()
     if request.method == 'POST':
@@ -145,6 +207,8 @@ def add_product(request):
     context = {'form': form}
     return render(request, 'account/add_product.html', context)
 
+
+@login_required(login_url='login')
 def update_product(request, pk):
     product = Product.objects.get(id=pk)
     form = ProductForm(instance=product)
@@ -156,6 +220,7 @@ def update_product(request, pk):
     context = {'form': form, 'product': product}
     return render(request, 'account/add_product.html', context)
 
+@login_required(login_url='login')
 def deleteproduct(request, pk):
     product = Product.objects.get(id=pk)
     if request.method == 'POST':
@@ -164,11 +229,15 @@ def deleteproduct(request, pk):
     context = {'item': product}
     return render(request, 'account/delete.html', context)
 
+
+@login_required(login_url='login')
 def tag_list(request):
     tags = Tag.objects.all()
     context = {'tags': tags}
     return render(request, 'account/tag.html', context)
 
+
+@login_required(login_url='login')
 def importtag(request):
     if request.method == "POST":
         csv_file = request.FILES.get("file")
@@ -178,3 +247,4 @@ def importtag(request):
             Tag.objects.get_or_create(name=row['name'])
         return redirect('tag')
     return render(request, 'account/managing_tag.html')
+
